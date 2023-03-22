@@ -7,6 +7,12 @@ import { AuthModule } from './auth/auth.module';
 import { TodolistsModule } from './todolists/todolists.module';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
+import { CredentialsInterceptor } from './core/interceptors/credentials.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,8 +23,15 @@ import { AppRoutingModule } from './app-routing.module';
     TodolistsModule,
     SharedModule,
     AppRoutingModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CredentialsInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
