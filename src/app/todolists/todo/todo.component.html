@@ -1,3 +1,17 @@
 <div class="box">
-  {{ todos.title }}
+  <div class="todo">
+    <input
+      type="text"
+      *ngIf="isEditMode; else content"
+      [(ngModel)]="newTitle"
+      (blur)="editTitleHandler()"
+    />
+    <ng-template #content>
+      <p (dblclick)="activateEditModeHandler()">
+        {{ todos.title }}
+      </p>
+    </ng-template>
+
+    <button (click)="removeTodoHandler()">X</button>
+  </div>
 </div>

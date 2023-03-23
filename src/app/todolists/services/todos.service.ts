@@ -35,4 +35,40 @@ export class TodosService {
         this.todos$.next(todos);
       });
   }
+
+  removeTodo(todoId: string) {
+    this.http
+      .delete(`${environment.baseUrl}/todo-lists/${todoId}`)
+      .pipe(
+        map((res) => {
+          const state = this.todos$.getValue();
+          return state.filter((el) => el.id !== todoId);
+        })
+      )
+      .subscribe((todos) => {
+        this.todos$.next(todos);
+      });
+  }
+
+  updateTitle(data: { todoId: string; title: string }) {
+    this.http
+      .put<CommonResponse>(`${environment.baseUrl}/todo-lists/${data.todoId}`, {
+        title: data.title,
+      })
+      .pipe(
+        map(() => {
+          const state = this.todos$.getValue();
+          return state.map((el) => {
+            if (el.id === data.todoId) {
+              return { ...el, title: data.title };
+            } else {
+              return el;
+            }
+          });
+        })
+      )
+      .subscribe((todos) => {
+        this.todos$.next(todos);
+      });
+  }
 }
