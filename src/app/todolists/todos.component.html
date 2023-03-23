@@ -1,1 +1,8 @@
+<div>
+  <h1>Angular todolists</h1>
+</div>
+<div>
+  <input placeholder="Add new todolist" [(ngModel)]="todoTitle" />
+  <button (click)="addTodoHandler()">Add</button>
+</div>
 <tl-todo *ngFor="let todos of todos$ | async" [todos]="todos"></tl-todo>

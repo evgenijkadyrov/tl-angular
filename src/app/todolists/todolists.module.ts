@@ -4,10 +4,11 @@ import { TodosComponent } from './todos.component';
 import { TodosRoutingModule } from './todos-routing.module';
 import { TodosService } from './services/todos.service';
 import { TodoComponent } from './todo/todo.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [TodosComponent, TodoComponent],
-  imports: [CommonModule, TodosRoutingModule],
+  imports: [CommonModule, TodosRoutingModule, FormsModule],
 })
 export class TodolistsModule {
   constructor(private todosService: TodosService) {}
