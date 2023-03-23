@@ -6,6 +6,7 @@
   <button (click)="addTodoHandler()">Add</button>
 </div>
 <tl-todo
+  class="title"
   *ngFor="let todos of todos$ | async"
   [todos]="todos"
   (removeTodo)="removeTodo($event)"
