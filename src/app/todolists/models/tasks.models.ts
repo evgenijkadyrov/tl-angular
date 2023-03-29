@@ -16,3 +16,7 @@ export interface Task {
   order: number;
   addedDate: string;
 }
+
+export interface DomainTask {
+  [key: string]: Task[];
+}
