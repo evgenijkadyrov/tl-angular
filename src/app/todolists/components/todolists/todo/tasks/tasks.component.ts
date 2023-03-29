@@ -30,4 +30,8 @@ export class TasksComponent implements OnInit {
     });
     this.taskTitle = '';
   }
+
+  removeTask(data: { todolistId: string; taskId: string }) {
+    this.tasksService.deleteTask(data);
+  }
 }
