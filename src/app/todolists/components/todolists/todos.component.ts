@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DomainType, Todos } from '../../models/todos.models';
 import { TodosService } from '../../services/todos.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'tl-todos',
@@ -15,7 +16,10 @@ export class TodosComponent implements OnInit {
     this.todosService.addNewTodo(this.todoTitle);
     this.todoTitle = '';
   }
-  constructor(private todosService: TodosService) {}
+  constructor(
+    private todosService: TodosService,
+    private authService: AuthService
+  ) {}
   ngOnInit() {
     this.todos$ = this.todosService.todos$;
     this.todosService.getTodos();
@@ -27,5 +31,9 @@ export class TodosComponent implements OnInit {
 
   editTitleTodo(data: { todoId: string; title: string }) {
     this.todosService.updateTitle(data);
+  }
+
+  logoutHandler() {
+    this.authService.logout();
   }
 }

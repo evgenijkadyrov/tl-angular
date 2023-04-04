@@ -1,0 +1,25 @@
+.container{
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+
+
+
+  .form{
+    display: flex;
+    flex-direction: column;
+.input{
+  margin: 15px;
+}
+    .button-box{
+      display: flex;
+      justify-content: center;
+      .button{
+        width: 150px;
+
+      }
+    }
+
+  }
+}
