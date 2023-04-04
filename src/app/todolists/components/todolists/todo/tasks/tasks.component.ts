@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TasksService } from '../../../../services/tasks.service';
-import { map, Observable } from 'rxjs';
+import { combineLatest, combineLatestAll, map, Observable } from 'rxjs';
 import { Task, UpdateStatusTask } from 'src/app/todolists/models/tasks.models';
+import { TodosService } from '../../../../services/todos.service';
+import { TaskStatusEnum } from '../../../../../core/enums/tasks.enum';
 
 @Component({
   selector: 'tl-tasks',
@@ -12,12 +14,31 @@ export class TasksComponent implements OnInit {
   @Input() todolistId!: string;
   tasks$?: Observable<Task[]>;
   taskTitle = '';
-  constructor(private tasksService: TasksService) {}
+  constructor(
+    private tasksService: TasksService,
+    private todosService: TodosService
+  ) {}
 
   ngOnInit(): void {
-    this.tasks$ = this.tasksService.tasks$.pipe(
-      map((tasks) => {
-        const tasksForTodo = tasks[this.todolistId];
+    this.todosService.todos$;
+    this.tasks$ = combineLatest([
+      this.tasksService.tasks$,
+      this.todosService.todos$,
+    ]).pipe(
+      map((res) => {
+        const tasks = res[0];
+        let tasksForTodo = tasks[this.todolistId];
+        const activeTodo = res[1].find((tl) => tl.id === this.todolistId);
+        if (activeTodo?.filter === 'completed') {
+          tasksForTodo = tasksForTodo.filter(
+            (t) => t.status === TaskStatusEnum.completed
+          );
+        }
+        if (activeTodo?.filter === 'active') {
+          tasksForTodo = tasksForTodo.filter(
+            (t) => t.status === TaskStatusEnum.active
+          );
+        }
         return tasksForTodo;
       })
     );

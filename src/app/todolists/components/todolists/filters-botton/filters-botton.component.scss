@@ -1,4 +1,8 @@
 .box{
   display: flex;
   justify-content: space-between;
+  .active{
+    background-color: #71e4e7;
+  }
 }
+

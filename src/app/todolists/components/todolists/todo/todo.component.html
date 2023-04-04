@@ -17,6 +17,9 @@
   <div>
     <tl-tasks [todolistId]="todos.id"></tl-tasks>
   </div>
-  <tl-filters-botton></tl-filters-botton>
+  <tl-filters-botton
+    (changeFilterEvent)="changeFilter($event)"
+    [filter]="todos.filter"
+  ></tl-filters-botton>
   <tl-filters-footer [addedDate]="todos.addedDate"></tl-filters-footer>
 </div>

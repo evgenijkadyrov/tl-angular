@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Todos } from '../../models/todos.models';
+import { DomainType, Todos } from '../../models/todos.models';
 import { TodosService } from '../../services/todos.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { TodosService } from '../../services/todos.service';
   styleUrls: ['./todos.component.scss'],
 })
 export class TodosComponent implements OnInit {
-  todos$!: Observable<Todos[]>;
+  todos$!: Observable<DomainType[]>;
   todoTitle = '';
   addTodoHandler() {
     this.todosService.addNewTodo(this.todoTitle);
