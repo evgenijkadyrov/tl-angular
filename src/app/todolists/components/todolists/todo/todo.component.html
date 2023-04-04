@@ -7,7 +7,7 @@
       (blur)="editTitleHandler()"
     />
     <ng-template #content>
-      <p (dblclick)="activateEditModeHandler()">
+      <p (dblclick)="activateEditModeHandler()" class="title">
         {{ todos.title }}
       </p>
     </ng-template>
@@ -17,4 +17,6 @@
   <div>
     <tl-tasks [todolistId]="todos.id"></tl-tasks>
   </div>
+  <tl-filters-botton></tl-filters-botton>
+  <tl-filters-footer [addedDate]="todos.addedDate"></tl-filters-footer>
 </div>
