@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { CommonResponse } from '../models/commonResponse.models';
 import { AuthEnum } from '../enums/auth.enum';
 import { Router } from '@angular/router';
-export interface LoginRequestType {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
-export interface AuthMeResponse {
-  email: string;
-  login: string;
-  id: number;
-}
+import { catchError, EMPTY } from 'rxjs';
+import { AuthMeResponse, LoginRequestType } from '../models/auth.models';
+import { NotificationService } from './notification.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
 @Injectable()
 export class AuthService {
   isAuth = false;
@@ -21,13 +15,18 @@ export class AuthService {
   authRequest = new Promise((resolve) => {
     this.resolveAuthRequest = resolve;
   });
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
   login(data: Partial<LoginRequestType>) {
     this.http
       .post<CommonResponse<{ userId: number }>>(
         `${environment.baseUrl}/auth/login`,
         data
       )
+      .pipe(catchError(this.errorHandler.bind(this)))
       .subscribe((res) => {
         if (res.resultCode === AuthEnum.success) {
           this.router.navigate(['/']);
@@ -37,6 +36,7 @@ export class AuthService {
   logout() {
     this.http
       .delete<CommonResponse>(`${environment.baseUrl}/auth/login`)
+      .pipe(catchError(this.errorHandler.bind(this)))
       .subscribe((res) => {
         if (res.resultCode === AuthEnum.success) {
           this.router.navigate(['/login']);
@@ -46,11 +46,17 @@ export class AuthService {
   me() {
     this.http
       .get<CommonResponse<AuthMeResponse>>(`${environment.baseUrl}/auth/me`)
+      .pipe(catchError(this.errorHandler.bind(this)))
       .subscribe((res) => {
         if (res.resultCode === AuthEnum.success) {
           this.isAuth = true;
         }
         this.resolveAuthRequest();
       });
+  }
+  private errorHandler(err: HttpErrorResponse) {
+    this.notificationService.handleError(err.message);
+    console.log('dddfdf', err.message);
+    return EMPTY;
   }
 }
